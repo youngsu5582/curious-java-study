@@ -12,10 +12,14 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
-      testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.assertj:assertj-core:3.24.2'
+    testImplementation 'org.openjdk.jol:jol-core:0.16'
+
 }
 
 test {
     useJUnitPlatform()
-    jvmArgs '--add-opens', 'java.base/java.util=ALL-UNNAMED'
+      jvmArgs '--add-opens', 'java.base/java.time=ALL-UNNAMED',
+                '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+                '-Djol.magicFieldOffset=true'
 }
