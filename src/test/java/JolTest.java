@@ -14,11 +14,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class JolTest {
 
-
     /**
-     * 0   8                    (object header: mark)     N/A
-     * 8   4                    (object header: class)    N/A
-     * 12   4                int Enum.ordinal              N/A
+     * 0   8    (object header: mark)     N/A
+     * 8   4    (object header: class)    N/A
+     * 12   4   int Enum.ordinal              N/A
      * 16   4   java.lang.String Enum.name                 N/A
      * 20   4                    (object alignment gap)
      * Instance size: 24 bytes
@@ -61,16 +60,22 @@ class JolTest {
                 .plusDays(1);
         final ClassLayout localDateTimeLayout = ClassLayout.parseInstance(localDateTime);
         final LocalDate date = Extracter.extract(localDateTime, "date");
+
+        long identityHashCode = System.identityHashCode(date);
+        String hashInHex = String.format("0x%08x", identityHashCode);
+        String markWord = "0x00000004" + hashInHex.substring(2) + "01";
+//        System.out.println("Mark Word: " + markWord);
+//        System.out.println(ClassLayout.parseInstance(date).toPrintable());
+
         final LocalTime time = Extracter.extract(localDateTime, "time");
 
         final ClassLayout localDateLayout = ClassLayout.parseInstance(date);
         final ClassLayout localTimeLayout = ClassLayout.parseInstance(time);
+
         final var fields = ClassLayoutConverter.converToMap(localDateTimeLayout);
 
-        assertThat(fields.get("date")
-                .size()).isEqualTo(4);
-        assertThat(fields.get("time")
-                .size()).isEqualTo(4);
+        assertThat(fields.get("date").size()).isEqualTo(4);
+        assertThat(fields.get("time").size()).isEqualTo(4);
 
         assertThat(localDateLayout.instanceSize()).isEqualTo(24);
         assertThat(localTimeLayout.instanceSize()).isEqualTo(24);

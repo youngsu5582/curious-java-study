@@ -10,16 +10,28 @@ repositories {
 }
 
 dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+     implementation("org.jsoup:jsoup:1.16.1")
+
+    implementation("org.seleniumhq.selenium:selenium-java:4.13.0") // 최신 버전
+    implementation 'io.github.bonigarcia:webdrivermanager:5.5.3'
+
+
+
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'org.assertj:assertj-core:3.24.2'
     testImplementation 'org.openjdk.jol:jol-core:0.16'
 
+
+
 }
 
 test {
     useJUnitPlatform()
-      jvmArgs '--add-opens', 'java.base/java.time=ALL-UNNAMED',
-                '--add-opens', 'java.base/java.util=ALL-UNNAMED',
-                '-Djol.magicFieldOffset=true'
+    jvmArgs '--add-opens', 'java.base/java.time=ALL-UNNAMED',
+            '--add-opens', 'java.base/java.util=ALL-UNNAMED',
+            '-Djol.magicFieldOffset=true'
 }
